@@ -1,10 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DIRECT_URL")
 }
 
 model User {
@@ -13,6 +14,8 @@ model User {
   name      String   @db.VarChar(250)
   email     String   @unique
   password  String   @db.VarChar(250)
+  grade     Int
+  class     String
   createdAt DateTime @default(now())
 
   @@map("users")
