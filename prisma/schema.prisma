@@ -14,9 +14,55 @@ model User {
   name      String   @db.VarChar(250)
   email     String   @unique
   password  String   @db.VarChar(250)
-  grade     Int
-  class     String
   createdAt DateTime @default(now())
 
+  questions Question[]
+  solutions Solution[]
+
   @@map("users")
+}
+
+model Class {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+
+  subjects Subject[]
+}
+
+model Subject {
+  id        Int      @id @default(autoincrement())
+  classId   Int
+  name      String
+  createdAt DateTime @default(now())
+
+  class     Class      @relation(fields: [classId], references: [id])
+  questions Question[]
+}
+
+model Question {
+  id            Int      @id @default(autoincrement())
+  subjectId     Int
+  userId        Int
+  content       String
+  correctAnswer String?
+  createdAt     DateTime @default(now())
+
+  subject   Subject    @relation(fields: [subjectId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
+  solutions Solution[]
+}
+
+model Solution {
+  id         String   @id @default(cuid())
+  questionId Int
+  userId     Int
+  answer     String
+  isCorrect  Boolean?
+  score      Int?
+  feedback   String?
+  createdAt  DateTime @default(now())
+
+  question Question @relation(fields: [questionId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
 }

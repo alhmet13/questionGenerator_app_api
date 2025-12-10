@@ -6,7 +6,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { logger } from '../libs';
 import { API_ROUTES, API_VERSION, HTTP_STATUS_CODE } from '../helpers';
-//import { generalRoute, authRoute, todosRoute, notesRoute, tagRoute } from '../routes';
+import { generalRoute, authRoute } from '../routes';
 
 const { PORT, NODE_ENV } = process.env;
 
@@ -52,7 +52,8 @@ const server = () => {
 
   app.all('/', (req, res): any => res.sendStatus(HTTP_STATUS_CODE.OK));
 
-  //app.use(`${API_VERSION.V1}${API_ROUTES.GENERAL}`, generalRoute);
+  app.use(`${API_VERSION.V1}${API_ROUTES.GENERAL}`, generalRoute);
+  app.use(`${API_VERSION.V1}${API_ROUTES.AUTH}`, authRoute);
 
   /* 
   ! Eğer ki bir URL backend'de yoksa otomatik olarak 404 Not Found hatası yaratıp onu yönetim sistemine iletir.
